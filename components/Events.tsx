@@ -1,9 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { fetchEvent } from '../lib/api';
 import { CalendarDays, PawPrint, HeartPulse, MapPin, ScrollText } from 'lucide-react';
-import { Event } from '../types/event';
+import Image from 'next/image';
 
-const Events: React.FC = () => {
+type AnimalTemplate = {
+  species?: string;
+  espèce?: string;
+  name: string;
+};
+
+type Animal = {
+  animalTemplate: AnimalTemplate;
+  sexe?: string;
+  sex?: string;
+  origine?: string;
+  origin?: string;
+};
+
+type Event = {
+  id: number;
+  image: string;
+  descriptionEvent: string;
+  situationDate: string;
+  animal?: Animal;
+};
+
+const Events = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -14,6 +36,7 @@ const Events: React.FC = () => {
         const data = await fetchEvent();
         setEvents(data);
       } catch (err) {
+        console.log("error: "+err);
         setError('Erreur lors du chargement des événements');
       } finally {
         setLoading(false);
@@ -57,10 +80,11 @@ const Events: React.FC = () => {
             className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
           >
             <div className="relative h-64">
-              <img
+              <Image
                 src={event.image}
                 alt={event.descriptionEvent}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 flex items-center gap-2">
                 <CalendarDays className="w-6 h-6 text-white" />
@@ -78,7 +102,7 @@ const Events: React.FC = () => {
               <h3 className="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
                 🎈 {event.descriptionEvent}
               </h3>
-              
+
               {event.animal && (
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
@@ -86,19 +110,19 @@ const Events: React.FC = () => {
                       🐾 {event.animal.animalTemplate.species || event.animal.animalTemplate.espèce}
                     </span>
                   </div>
-                  
+
                   <div className="flex items-center text-gray-700 gap-2">
                     <span className="text-2xl text-yellow-500">⭐</span>
                     <span className="font-medium">{event.animal.animalTemplate.name}</span>
                   </div>
-                  
-                  {event.animal.sexe && (
+
+                  {(event.animal.sexe || event.animal.sex) && (
                     <p className="text-sm text-gray-500 flex items-center gap-2">
                       👥 Sexe: {event.animal.sexe || event.animal.sex}
                     </p>
                   )}
-                  
-                  {event.animal.origine && (
+
+                  {(event.animal.origine || event.animal.origin) && (
                     <p className="text-sm text-gray-500 flex items-center gap-2">
                       <MapPin className="w-5 h-5 text-green-500" />
                       Origine: {event.animal.origine || event.animal.origin}
@@ -123,7 +147,7 @@ const Events: React.FC = () => {
             <HeartPulse className="w-12 h-12 text-red-500" strokeWidth={1.5} />
           </h1>
           <p className="text-lg text-gray-700 max-w-2xl mx-auto flex items-center justify-center gap-2">
-            <ScrollText className="w-5 h-5 text-indigo-700" /> 
+            <ScrollText className="w-5 h-5 text-indigo-700" />
             Découvrez les dernières actualités de nos animaux 🐾
           </p>
         </header>

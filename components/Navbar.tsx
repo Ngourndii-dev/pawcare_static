@@ -2,6 +2,7 @@ import { MenuIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import logo from "../public/me not alone.png";
+import Link from "next/link";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,52 +26,52 @@ export default function Navbar() {
 
         <ul className="hidden md:flex space-x-8">
           <li>
-            <a href="/" className="text-gray-300 hover:text-white font-medium transition duration-300
+            <Link href="/" className="text-gray-300 hover:text-white font-medium transition duration-300
                            relative after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 
                            after:bg-blue-400 hover:after:w-full after:transition-all after:duration-300"
               >
               About
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/sales" className="text-gray-300 hover:text-white font-medium transition duration-300
+            <Link href="/sales" className="text-gray-300 hover:text-white font-medium transition duration-300
                           relative after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 
                           after:bg-blue-400 hover:after:w-full after:transition-all after:duration-300"
               >
               Sales
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/services" className="text-gray-300 hover:text-white font-medium transition duration-300
+            <Link href="/services" className="text-gray-300 hover:text-white font-medium transition duration-300
                          relative after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 
                          after:bg-blue-400 hover:after:w-full after:transition-all after:duration-300"
               >
               Services
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/register" className="text-gray-300 hover:text-white font-medium transition duration-300
+            <Link href="/register" className="text-gray-300 hover:text-white font-medium transition duration-300
                         relative after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 
                         after:bg-blue-400 hover:after:w-full after:transition-all after:duration-300"
               >
               Register
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/animal" className="text-gray-300 hover:text-white font-medium transition duration-300
+            <Link href="/animal" className="text-gray-300 hover:text-white font-medium transition duration-300
                         relative after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 
                         after:bg-blue-400 hover:after:w-full after:transition-all after:duration-300"
               >
               View all animals
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/contact" className="text-gray-300 hover:text-white font-medium transition duration-300
+            <Link href="/contact" className="text-gray-300 hover:text-white font-medium transition duration-300
                         relative after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 
                         after:bg-blue-400 hover:after:w-full after:transition-all after:duration-300"
               >
               Contact
-            </a>
+            </Link>
           </li>
         </ul>
 

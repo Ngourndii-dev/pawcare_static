@@ -1,10 +1,12 @@
 import { Animal } from '@/types/animal';
-import { BadgeDollarSign, Home,Key, Venus, Palette, Search } from 'lucide-react';
+import { BadgeDollarSign, Home, Key, Venus, Palette, Search } from 'lucide-react';
 import React, { useEffect, useState, useCallback } from 'react';
 import OrderForm from './OrderForm';
 import ReviewForm from './ReviewForm';
-import datastatic from '../data'
-const AnimalDetailItem: React.FC<{ icon: React.ReactNode; label: string; value: string | number }> = ({ icon, label, value }) => (
+import datastatic from '../data';
+import Image from 'next/image';
+
+const AnimalDetailItem: React.FC<{ icon: React.ReactElement<{ className?: string }>; label: string; value: string | number }> = ({ icon, label, value }) => (
   <li className="flex items-center justify-between w-full p-3 border-b border-gray-200 last:border-b-0">
     <span className="flex items-center gap-3">
       {React.cloneElement(icon, { className: 'w-5 h-5 text-blue-500' })}
@@ -15,25 +17,22 @@ const AnimalDetailItem: React.FC<{ icon: React.ReactNode; label: string; value: 
 );
 
 const AnimalCard: React.FC<{ animal: Animal }> = ({ animal }) => {
-  const [showOrderForm, setShowOrderForm] = useState<boolean>(false);
-  const [showReviewForm, setShowReviewForm] = useState<boolean>(false); 
+  const [showOrderForm, setShowOrderForm] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
 
-  const handleOrderClick = () => {
-    setShowOrderForm(true); 
-  };
-
-  const handleReviewClick = () => {
-    setShowReviewForm(true); 
-  };
+  const handleOrderClick = () => setShowOrderForm(true);
+  const handleReviewClick = () => setShowReviewForm(true);
 
   return (
     <div className="relative bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl group">
       <div className="overflow-hidden">
-        <img
+        <Image
           src={animal.imageUrl}
           alt={animal.animalTemplate.name}
           className="w-full h-80 object-cover transition-opacity duration-300 group-hover:opacity-90 transform transition-transform duration-300 group-hover:scale-110"
           loading="lazy"
+          width={500}
+          height={320}
         />
       </div>
       <div className="p-6">
@@ -42,13 +41,13 @@ const AnimalCard: React.FC<{ animal: Animal }> = ({ animal }) => {
         </h2>
         <div className="text-gray-700 text-lg font-medium">
           <ul className="space-y-2 w-full">
-            <AnimalDetailItem icon={<Home />} label="Origin" value={animal.origin} />
-            <AnimalDetailItem icon={<BadgeDollarSign />} label="Price" value={`${animal.price} €`} />
-            <AnimalDetailItem icon={<Key />} label="Rent" value={`${animal.rent} €`} />
-            <AnimalDetailItem icon={<Venus />} label="Sex" value={animal.sex} />
-            <AnimalDetailItem icon={<Palette />} label="Color" value={animal.color} />
+            <AnimalDetailItem icon={<Home />} label="Origin" value={animal.origin ?? 'Unknown'} />
+            <AnimalDetailItem icon={<BadgeDollarSign />} label="Price" value={`${animal.price ?? 0} €`} />
+            <AnimalDetailItem icon={<Key />} label="Rent" value={`${animal.rent ?? 0} €`} />
+            <AnimalDetailItem icon={<Venus />} label="Sex" value={animal.sex ?? 'Unknown'} />
+            <AnimalDetailItem icon={<Palette />} label="Color" value={animal.color ?? 'Unknown'} />
           </ul>
-          <div className="mt-6 flex gap-4"> 
+          <div className="mt-6 flex gap-4">
             <button
               onClick={handleOrderClick}
               className="bg-blue-800 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
@@ -65,11 +64,10 @@ const AnimalCard: React.FC<{ animal: Animal }> = ({ animal }) => {
         </div>
       </div>
       {showOrderForm && <OrderForm animalId={animal.id} onClose={() => setShowOrderForm(false)} />}
-      {showReviewForm && <ReviewForm animalId={animal.id} onClose={() => setShowReviewForm(false)} />} {/* Ajout du ReviewForm */}
+      {showReviewForm && <ReviewForm animalId={animal.id} onClose={() => setShowReviewForm(false)} />}
     </div>
   );
 };
-
 const LoadingState: React.FC = () => (
   <div className="flex justify-center items-center h-screen text-3xl font-semibold text-blue-500 animate-pulse bg-white">
     Loading...
@@ -84,9 +82,9 @@ const ErrorState: React.FC<{ error: string }> = ({ error }) => (
 
 const AnimalList: React.FC = () => {
   const [animals, setAnimals] = useState<Animal[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const getAnimals = useCallback(async () => {
     try {

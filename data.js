@@ -1,4 +1,4 @@
-const animals = [
+const data = [
     {
       id: 45,
       animalTemplate: {
@@ -256,5 +256,5 @@ const animals = [
       imageUrl: "https://drive.google.com/uc?id=1EItUCXy6KQOHO-VdLZT0ptnfbSlV_zXP"
     }
 ];
-export default animals;
+export default data;
   
